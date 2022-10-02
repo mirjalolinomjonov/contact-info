@@ -1,0 +1,53 @@
+@import "tailwind";
+
+
+// reset styles
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: #fff;
+}
+
+// container styles
+.container {
+  max-width: 1226px;
+  margin: 0px auto;
+  // padding: 0 15px;
+
+  @media (max-width: 1024px) {
+    max-width: 1024px;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 768px;
+  }
+
+  @media (max-width: 640px) {
+    max-width: 100%;
+  }
+}
+
+// scrollbar
+
+::-webkit-scrollbar-track {
+  background: #dfe2e7;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #bbced6;
+  border-radius: 20px;
+  transition: 0.3s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a5c9d9;
+}
