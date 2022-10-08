@@ -1,5 +1,8 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 // DATA
 const nav = ref([
@@ -25,6 +28,13 @@ function openNavbar() {
 
 function closeNavbar() {
   isNav.value = false;
+}
+
+function logout() {
+  if (confirm("really")) {
+    localStorage.removeItem("token");
+    router.push({ name: "auth" });
+  }
 }
 </script>
 
@@ -56,7 +66,9 @@ function closeNavbar() {
             </router-link>
           </li>
         </ul>
+        <!-- logout btn -->
         <button
+          @click="logout"
           class="
             px-4
             py-2
@@ -69,8 +81,7 @@ function closeNavbar() {
             hover:opacity-70
           "
         >
-          <span v-if="false">login</span>
-          <span v-else>logout</span>
+          logout
         </button>
 
         <!-- close navbar btn -->
@@ -119,7 +130,6 @@ function closeNavbar() {
 <style lang="scss" scoped>
 .is-active {
   top: 0 !important;
-
 }
 
 @media screen and (max-width: 640px) {
@@ -131,7 +141,7 @@ function closeNavbar() {
     height: 72px;
     z-index: 9999;
     background: #212121;
-    transition: all .5s ease-in-out;
+    transition: all 0.5s ease-in-out;
   }
 }
 </style>
