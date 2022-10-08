@@ -1,17 +1,24 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed, onBeforeMount, onMounted } from "vue";
+import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
 
+const store = useStore();
+const route = useRoute();
+const router = useRouter();
+
+// ========== DATA ==========
 // input options
 const options = ref([
   {
-    vm: "fullName",
+    vm: "name",
     type: "text",
     label: "full name",
     placeholder: "mirjalol inomjonov",
   },
   {
     vm: "phone",
-    type: "text",
+    type: "number",
     label: "phone number",
     placeholder: "+998 00 000 00 00",
   },
@@ -47,18 +54,64 @@ const options = ref([
 ]);
 
 // form data
-const formData = ref({
-  fullName: "",
+const contact = ref({
+  name: "",
   phone: "",
   email: "",
   tag: 0,
 });
+
+// ========== COMPUTED METHOD ==========
+const contacts = computed(() => store.state.contacts);
+
+// ========== METHODS ==========
+function addContact() {
+  if (
+    contact.value.name &&
+    contact.value.phone &&
+    contact.value.email &&
+    contact.value.tag
+  ) {
+    if (!route.params.slug) {
+      store.commit("CREATE_CONTACT", {
+        name: contact.value.name,
+        phone: contact.value.phone,
+        email: contact.value.email,
+        tag: contact.value.tag,
+      });
+      contact.value.name = "";
+      contact.value.phone = "";
+      contact.value.email = "";
+      contact.value.tag = 0;
+    } else {
+      store.commit("EDIT", {
+        index: route.params.slug,
+        contact: contact.value,
+      });
+    }
+    router.push({ name: "table" });
+  } else {
+    alert("Bo'sh joylarni to'ldiring!");
+  }
+}
+
+// ========== LIFECYCLE HOOKS==========
+onBeforeMount(() => {
+  const slug = route.params.slug;
+  try {
+    if (slug && slug < contacts.value.length) {
+      contact.value = contacts.value[slug];
+    }
+  } catch (error) {
+    console.log("error", error);
+  }
+});
 </script>
 
 <template>
-  <main class="bg-teal-100 min-h-screen grid place-content-center">
+  <main class="bg-teal-50 min-h-screen grid place-content-center">
     <form
-      @submit.prevent="submit"
+      @submit.prevent="addContact"
       class="w-[500px] p-4 rounded-xl bg-white flex flex-col gap-4"
     >
       <div
@@ -80,8 +133,8 @@ const formData = ref({
         </label>
         <input
           v-if="item.type !== 'select'"
-          v-model="formData[item.vm]"
-          v-maska="'+998 ## ### ## ##'"
+          v-model="contact[item.vm]"
+          v-maska="item.type == 'number' ? '+998 ## ### ## ##' : ''"
           type="text"
           :id="item.label"
           :placeholder="item.placeholder"
@@ -98,7 +151,7 @@ const formData = ref({
         />
         <select
           v-else
-          v-model="formData[item.vm]"
+          v-model="contact[item.vm]"
           name="tag"
           id="tag"
           class="
@@ -112,7 +165,7 @@ const formData = ref({
             bg-white
             capitalize
           "
-          :class="{ 'text-gray-400': formData.tag == 0 }"
+          :class="{ 'text-gray-400': contact.tag == 0 }"
         >
           <option
             :value="tag.value"
@@ -124,6 +177,8 @@ const formData = ref({
           </option>
         </select>
       </div>
+
+      <!-- submit btn -->
       <button
         class="
           py-3
@@ -141,10 +196,5 @@ const formData = ref({
         add contact
       </button>
     </form>
-
-    <pre>{{ formData }}</pre>
   </main>
 </template>
-
-<style lang="scss" scoped>
-</style>

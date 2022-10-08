@@ -18,9 +18,14 @@ const router = createRouter({
       name: "home",
       component: home,
     },
-    lazyLoaded("about"),
     lazyLoaded("create"),
     lazyLoaded("table"),
+    lazyLoaded("about"),
+    {
+      path: "/create/:slug",
+      name: "edit",
+      component: () => import("@/pages/create.vue"),
+    },
   ],
 });
 
