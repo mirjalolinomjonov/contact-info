@@ -37,6 +37,9 @@ const router = createRouter({
           path: "/create/:slug",
           name: "edit",
           component: () => import("@/pages/create.vue"),
+          meta: {
+            requiresAuth: true,
+          },
         },
       ],
     },
