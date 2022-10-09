@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import home from "@/pages/index.vue";
+import layout from "@/layouts/default.vue";
 
 // lazy-loaded
 const lazyLoaded = (name) => {
@@ -19,7 +20,7 @@ const router = createRouter({
     {
       path: "/",
       name: "default",
-      component: () => import("@/layouts/default.vue"),
+      component: layout,
       meta: { title: "Contact info" },
       children: [
         {
