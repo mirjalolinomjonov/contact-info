@@ -7,7 +7,7 @@ const lazyLoaded = (name) => {
   return {
     path: `/${name}`,
     name: `${name}`,
-    component: import(`@/pages/${name}.vue`),
+    component: () => import(`@/pages/${name}.vue`),
     meta: {
       requiresAuth: true,
     },
@@ -21,7 +21,7 @@ const router = createRouter({
       path: "/",
       name: "default",
       component: layout,
-      meta: { title: "Contact info" },
+      meta: { title: "Contacts management" },
       children: [
         {
           path: "",
