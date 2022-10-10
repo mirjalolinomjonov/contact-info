@@ -88,9 +88,10 @@ function viewPassword() {
             inline-flex
             items-center
             justify-center
+            eye
           "
         >
-          <icon-base name="eye" color="#0d9488" class="eye" />
+          <icon-base name="eye" color="#0d9488" />
           <span
             class="eye__line"
             :class="{ 'is-active': isShowPassword }"
@@ -117,7 +118,6 @@ function viewPassword() {
 
 <style lang="scss" scoped>
 .eye {
-  position: relative;
   width: 20px;
   height: 20px;
   &__line {

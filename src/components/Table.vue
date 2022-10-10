@@ -68,10 +68,10 @@ onMounted(() => {
         </td>
         <td class="inline-flex gap-3">
           <button @click="edit(index)">
-            <IconBase name="edit" color="#5096ec" />
+            <icon-base name="edit" color="#5096ec" />
           </button>
           <button @click="remove(index)">
-            <IconBase name="delete" color="red" />
+            <icon-base name="delete" color="red" />
           </button>
         </td>
       </tr>
